@@ -1,0 +1,21 @@
+<view class="container">
+  <button wx:if="{{!isGetInfo}}" class="getInfo" bindgetuserinfo="getInfo" open-type='getUserInfo'>获取授权</button>
+  <!-- 个人信息模块 -->
+  <view wx:else class="userInfo" bindtap="clickBindInfo">
+    <image class="avatarBox" src="{{avatarUrl}}"></image>
+    <view class="infoText">
+      <text>{{userInfo.nickName}}</text>
+    </view>
+  </view>
+  <!-- 个人信息下方的模块 -->
+  <view class="tools">
+    <view wx:for="{{usingTools}}">
+      <block wx:for="{{item}}">
+        <button wx:if="{{item.type==0}}" bindtap="{{item.active}}"><text style="line-height:1.5;padding-left:35rpx padding-right:35rpx;padding-top:45rpx;padding-bottom:45rpx;">{{item.name}}</text></button>
+        <button wx:if="{{item.type==1}}" open-type="contact"><text style="line-height:1.5;padding-left:35rpx padding-right:35rpx;padding-top:45rpx;padding-bottom:45rpx;">{{item.name}}</text></button>
+      </block>
+    </view>
+  </view>
+
+
+</view>
