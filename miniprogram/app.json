@@ -1,6 +1,8 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/exercise/exercise",
+    "pages/index/index",
+    "pages/exam/exam"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

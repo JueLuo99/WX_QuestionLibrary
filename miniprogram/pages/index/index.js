@@ -4,10 +4,20 @@ const app = getApp()
 Page({
   data: {
     avatarUrl: '../../images/user-unlogin.png',
-    usingTools: [[{ "name": "联系", "active": "clickTeacherTable", "type": 0 }, { "name": "模拟", "active": "clicktable", "type": 0 }], [{ "name": "客服", "type": 1 }]]
+    usingTools: [[{ "name": "练习", "active": "exercise", "type": 0 }, { "name": "模拟", "active": "exam", "type": 0 }], [{ "name": "客服", "type": 1 }]]
   },
   onShow: function(){
     this.onPullDownRefresh()
+  },
+  exercise: function(){
+    wx.navigateTo({
+      url: '../exercise/exercise'
+    })
+  },
+  exam: function(){
+    wx.navigateTo({
+      url: '../exam/exam'
+    })
   },
   onLoad: function() {
     // 获取用户信息

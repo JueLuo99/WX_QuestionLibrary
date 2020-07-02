@@ -1,0 +1,12 @@
+<view class="container">
+    <view wx:for="{{questionList}}" wx:for-index="qIndex" wx:for-item="item">
+        <view class="question">
+            {{item.question}}
+        </view>
+        <view class="{{choicesItem.class}}" wx:for="{{item.choices}}" wx:for-index="cIndex" wx:for-item="choicesItem" bindtap="selectItem" data-qIndex="{{qIndex}}" data-cIndex="{{cIndex}}">
+            {{choicesItem.answer}}
+        </view>
+    </view>
+    
+    <view class="submit" bindtap="{{submit.active}}">{{submit.name}}</view>
+</view>
