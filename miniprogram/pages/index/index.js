@@ -124,9 +124,8 @@ Page({
           ]
         ]
       })
-      // 获取到并填充数据后自动刷新页面，避免用户手动刷新
+    // 获取到并填充数据后自动刷新页面，避免用户手动刷新
     this.onPullDownRefresh()
-
   },
 
   onPullDownRefresh: function(e) {
