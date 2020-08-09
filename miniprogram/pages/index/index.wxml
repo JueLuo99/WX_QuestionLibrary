@@ -7,10 +7,16 @@
       <text>{{userInfo.nickName}}</text>
     </view>
   </view>
+  <!-- 题库选择区 -->
+  <view class="tiku" wx:if="{{isGetInfo}}">
+    <text>当前题库：</text>
+    <picker range="{{tikuData}}" value="{{tikuIndex}}" bindchange="changeTiku">{{tikuData[tikuIndex]}}</picker>
+  </view>
   <!-- 个人信息下方的模块 -->
   <view class="tools">
     <view wx:for="{{usingTools}}">
       <block wx:for="{{item}}">
+        <!-- 这里的 type1 是联系客服，其他功能都使用 type0 -->
         <button wx:if="{{item.type==0}}" bindtap="{{item.active}}"><text style="line-height:1.5;padding-left:35rpx padding-right:35rpx;padding-top:45rpx;padding-bottom:45rpx;">{{item.name}}</text></button>
         <button wx:if="{{item.type==1}}" open-type="contact"><text style="line-height:1.5;padding-left:35rpx padding-right:35rpx;padding-top:45rpx;padding-bottom:45rpx;">{{item.name}}</text></button>
       </block>

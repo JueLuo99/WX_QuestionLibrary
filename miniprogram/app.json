@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/exercise/exercise",
     "pages/index/index",
+    "pages/exercise/exercise",
     "pages/exam/exam"
   ],
   "window": {
