@@ -1,2 +1,7 @@
 <!--miniprogram/pages/exam/exam.wxml-->
 <text>miniprogram/pages/exam/exam.wxml</text>
+
+<view>
+    <question badInfo="11221">
+    </question>
+</view>

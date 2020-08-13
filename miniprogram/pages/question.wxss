@@ -1,0 +1,40 @@
+.question{
+  border-radius: 20rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 660rpx;
+  padding:20rpx;
+  background: #fff;
+  margin-top: 20rpx;
+  word-break: break-all;
+}
+.choice{
+  border-radius: 20rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 660rpx;
+  padding: 20rpx;
+  background: #fff;
+  margin-top: 20rpx;
+  word-break: break-all;
+}
+.submit{
+  border-radius: 20rpx;
+
+  width: 660rpx;
+  padding:20rpx;
+  background: #fff;
+  margin-top: 20rpx;
+  text-align: center;
+}
+.true{
+  background: #0C0;
+}
+.false{
+  background: #c00;
+}
+.selected{
+  background: #ccc;
+}
