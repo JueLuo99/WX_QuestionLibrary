@@ -3,7 +3,9 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 660rpx;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+  /* width: 660rpx; */
   padding:20rpx;
   background: #fff;
   margin-top: 20rpx;
@@ -14,7 +16,9 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 660rpx;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+  /* width: 660rpx; */
   padding: 20rpx;
   background: #fff;
   margin-top: 20rpx;
@@ -22,8 +26,9 @@
 }
 .submit{
   border-radius: 20rpx;
-
-  width: 660rpx;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+  /* width: 660rpx; */
   padding:20rpx;
   background: #fff;
   margin-top: 20rpx;
