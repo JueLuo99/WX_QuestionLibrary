@@ -69,6 +69,7 @@ Page({
       return null;
     }
     this.data.end = true;
+    this.setData({end:this.data.end})
     var qlist = this.data.questionList;
     for(var i=0; i<qlist.length; i++){
       var item = qlist[i]["choices"];

@@ -1,34 +1,3 @@
-/* miniprogram/pages/exam/exam.wxss */
-
-.question{
-  border-radius: 20rpx;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 660rpx;
-  padding:20rpx;
-  background: #fff;
-  margin-top: 20rpx;
-  word-break: break-all;
-}
-.choice{
-  border-radius: 20rpx;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 600rpx;
-  padding: 20rpx;
-  background: #fff;
-  margin-top: 20rpx;
-  margin-left: 60rpx;
-  word-break: break-all;
-}
-.true{
-  background: #0C0;
-}
-.false{
-  background: #c00;
-}
-.selected{
-  background: #ccc;
+question{
+  margin-bottom: 50rpx;
 }

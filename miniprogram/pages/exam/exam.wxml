@@ -1,7 +1,2 @@
-<!--miniprogram/pages/exam/exam.wxml-->
-<text>miniprogram/pages/exam/exam.wxml</text>
-
-<view>
-    <question badInfo="11221">
-    </question>
-</view>
+<question isEnd="{{end}}" wx:for="{{qs}}" questionInfo="{{item}}" wx:for-index="index" bindChoice="choice" id="{{index}}"></question>
+<button class="submit" bindtap="submit">提交</button>
