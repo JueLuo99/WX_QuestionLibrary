@@ -5,6 +5,8 @@
     <image class="avatarBox" src="{{avatarUrl}}"></image>
     <view class="infoText">
       <text>{{userInfo.nickName}}</text>
+      <view>答题数：{{total}}</view>
+      <view>正确数：{{correct}}</view>
     </view>
   </view>
   <!-- 题库选择区 -->

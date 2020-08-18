@@ -23,6 +23,10 @@
   display: flex;
   flex-direction: column;
 }
+.infoText view{
+  color: #aaa;
+  font-size: 0.5em;
+}
 .appInfo{
   color: #555;
   font-size: 0.6em;

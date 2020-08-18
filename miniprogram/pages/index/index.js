@@ -8,13 +8,14 @@ Page({
     allTiku: [],
     tikuData: [],
     tikuIndex: 0,
-    openid: ""
+    openid: "",
+    total: 0,
+    correct: 0
   },
 
   onShow: function() {
     this.onPullDownRefresh()
   },
-
   exercise: function() {
     wx.navigateTo({
       url: '../exercise/exercise'
@@ -23,10 +24,11 @@ Page({
 
   exam: function() {
     wx.navigateTo({
-      url: '../exam/exam'
+      url: '../exam/exam',
+      data: {}
     })
   },
-
+ 
   // 实时响应切换题库
   changeTiku: function(e) {
     this.setData({ tikuIndex: e.detail.value })
@@ -63,6 +65,7 @@ Page({
         }
       }
       console.log("用户可访问题库：", d)
+      this.setData({total: res.data[0].total,correct: res.data[0].correct})
       this.setData({ tikuData: d })
     })
   },
