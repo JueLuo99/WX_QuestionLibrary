@@ -5,7 +5,14 @@ Page({
    * 页面的初始数据
    */
   data: {
+    // 单选题
+    num_of_s: 10,
+    // 多选题
+    num_of_m: 10,
+    // 判断题
+    num_of_tf: 10,
     qs: [],
+    tikuName: "WangAn",
     end: false
   },
 
@@ -18,6 +25,7 @@ Page({
       this.data.qs.push(t)
     }
     this.setData({qs:this.data.qs})
+    this.getQuestions()
   },
   // 监听事件，监听Component选择改变事件
   choice:function(e){
@@ -26,7 +34,6 @@ Page({
   },
   // 提交按钮
   submit:function(){
-
     // 已提交判断
     if(this.data.end){
       return null;
@@ -62,6 +69,64 @@ Page({
     }
     this.setData({qs:qlist});
 
+  },
+  // 获取题目
+  getQuestions: function(){
+    const db = wx.cloud.database();
+    const $ = db.command;
+    var no = 0;
+    this.data.qs = [];
+    // 匹配对应的题库并从中抽取题目
+    db.collection(this.data.tikuName).aggregate().match({type: "s"}).sample({size: this.data.num_of_s}).end().then(res=>{
+      console.log("测试单选", res.list)
+      for(var i=0;i<res.list.length;i++){
+        no += 1
+        var tItem = res.list[i]
+        tItem.question = no + ". [单选题] " + tItem.question
+        var choices = []
+        console.log("Choices",tItem["choices"],tItem["choices"].length)
+        for(var o=0;o<tItem["choices"].length;o++){
+          choices.push({"answers":tItem["choices"][o],"isTrue":tItem["answers"].indexOf(tItem["choices"][o])>-1,"class":"choice","selected":false})
+        }
+        tItem["choices"] = choices
+        tItem["answerNumber"] = tItem["answers"].length
+        this.data.qs.push(tItem)
+      }
+      db.collection(this.data.tikuName).aggregate().match({type: "m"}).sample({size: this.data.num_of_m}).end().then(res=>{
+        console.log("测试多选", res.list)
+        for(var i=0;i<res.list.length;i++){
+          no += 1
+          var tItem = res.list[i]
+          tItem.question = no + ". [多选题] " + tItem.question
+          var choices = []
+          console.log("Choices",tItem["choices"],tItem["choices"].length)
+          for(var o=0;o<tItem["choices"].length;o++){
+            choices.push({"answers":tItem["choices"][o],"isTrue":tItem["answers"].indexOf(tItem["choices"][o])>-1,"class":"choice","selected":false})
+          }
+          tItem["choices"] = choices
+          tItem["answerNumber"] = tItem["answers"].length
+          this.data.qs.push(tItem)
+        }
+        db.collection(this.data.tikuName).aggregate().match({type: "tf"}).sample({size: this.data.num_of_tf}).end().then(res=>{
+          console.log("测试判断", res.list)
+          for(var i=0;i<res.list.length;i++){
+            no += 1
+            var tItem = res.list[i]
+            tItem.question = no + ". [判断题] " + tItem.question
+            var choices = []
+            console.log("Choices",tItem["choices"],tItem["choices"].length)
+            for(var o=0;o<tItem["choices"].length;o++){
+              choices.push({"answers":tItem["choices"][o],"isTrue":tItem["answers"].indexOf(tItem["choices"][o])>-1,"class":"choice","selected":false})
+            }
+            tItem["choices"] = choices
+            tItem["answerNumber"] = tItem["answers"].length
+            this.data.qs.push(tItem)
+          }
+          this.setData({qs: this.data.qs})
+        });
+      });
+    });
+    
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
