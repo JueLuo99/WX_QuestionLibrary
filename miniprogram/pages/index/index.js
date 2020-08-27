@@ -12,11 +12,18 @@ Page({
     total: 0,
     correct: 0
   },
-
   onShow: function() {
-    this.onPullDownRefresh()
+    if(this.data.openid!=""){
+      this.getStats()
+    }
   },
-  
+  getStats: function() {
+    const db = wx.cloud.database()
+    const $ = db.command
+    db.collection('users').where({ openid: this.data.openid }).get().then(res => {
+      this.setData({total: res.data[0].total,correct: res.data[0].correct})
+    })
+  },
   exercise: function() {
     wx.navigateTo({
       url: '../exercise/exercise?tikuName=' + this.data.allTiku[this.data.tikuIndex]["collection"]
@@ -132,6 +139,5 @@ Page({
   },
 
   onPullDownRefresh: function(e) {
-
   }
 })
