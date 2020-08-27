@@ -16,16 +16,16 @@ Page({
   onShow: function() {
     this.onPullDownRefresh()
   },
+  
   exercise: function() {
     wx.navigateTo({
-      url: '../exercise/exercise'
+      url: '../exercise/exercise?tikuName=' + this.data.allTiku[this.data.tikuIndex]["collection"]
     })
   },
 
   exam: function() {
     wx.navigateTo({
-      url: '../exam/exam',
-      data: {}
+      url: '../exam/exam?tikuName=' + this.data.allTiku[this.data.tikuIndex]["collection"]
     })
   },
  

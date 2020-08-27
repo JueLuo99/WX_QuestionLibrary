@@ -20,6 +20,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    if(options.tikuName == null){
+      wx.navigateBack()
+    }else{
+      this.setData({tikuName: options.tikuName})
+    }
     var t = {"question":"这是亿个题目","choices":[{"answers":"这是选项A","isTrue":false,"class":"choice","selected":false},{"answers":"B","isTrue":true,"class":"choice","selected":false}],"answerNumber":1}
     for(var i=0;i<10;i++){
       this.data.qs.push(t)
