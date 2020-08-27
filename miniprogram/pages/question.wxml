@@ -1,4 +1,4 @@
-<view class="question">
+<view class="question {{questionInfo.T}}">
   {{questionInfo.question}}
 </view>
 <view class="{{choicesItem.class}}" wx:for="{{questionInfo.choices}}" wx:for-index="cIndex" wx:for-item="choicesItem" bindtap="selectItem" data-qIndex="{{qIndex}}" data-cIndex="{{cIndex}}">

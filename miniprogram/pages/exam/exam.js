@@ -43,10 +43,15 @@ Page({
     this.setData({end:this.data.end})
     // 数据处理
     var qlist = this.data.qs;
+    var cNum = 0
+    var tNum = qlist.length
     for(var i=0; i<qlist.length; i++){
       var item = qlist[i]["choices"];
+      var t = true;
+      var tN = 0;
       for(var n=0;n<item.length;n++){
         if(item[n]["selected"]){
+          tN += 1
           if(item[n]["isTrue"]){
             if(qlist[i]["choices"][n]["class"].indexOf("true")<0){
               qlist[i]["choices"][n]["class"] = "choice true";
@@ -55,6 +60,7 @@ Page({
             if(qlist[i]["choices"][n]["class"].indexOf("false")<0){
               qlist[i]["choices"][n]["class"] = "choice false";
             }
+            t = false
           }
         }else{
           qlist[i]["choices"][n]["class"] = qlist[i]["choices"][n]["class"].replace(" true","").replace(" false","");
@@ -65,10 +71,22 @@ Page({
             qlist[i]["choices"][n]["class"] = "choice true";
           }
         }
+        if(tN!=qlist[i]["answerNumber"]){
+          t = false
+        }
+      }
+      if(t){
+        cNum += 1
+        qlist[i]["T"] = true
+      }else{
+        qlist[i]["T"] = false
       }
     }
     this.setData({qs:qlist});
 
+    wx.cloud.callFunction({name: "updateCorrect",data:{append:cNum}})
+    wx.cloud.callFunction({name: "updateTotal",data:{append:tNum}})
+    wx.setNavigationBarTitle({title:"答题"+tNum+",正确"+cNum})
   },
   // 获取题目
   getQuestions: function(){
