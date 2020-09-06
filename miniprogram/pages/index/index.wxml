@@ -5,12 +5,14 @@
     <image class="avatarBox" src="{{avatarUrl}}"></image>
     <view class="infoText">
       <text>{{userInfo.nickName}}</text>
-      <view>答题数：{{total}}</view>
-      <view>正确数：{{correct}}</view>
+      <view wx:if="{{isVerifiedUser}}">答题数：{{total}}</view>
+      <view wx:if="{{isVerifiedUser}}">正确数：{{correct}}</view>
+      <view wx:if="{{!isVerifiedUser}}">未认证的用户！请将此页面截图并联系客服！</view>
+      <view wx:if="{{!isVerifiedUser}}">{{openid}}</view>
     </view>
   </view>
   <!-- 题库选择区 -->
-  <view class="tiku" wx:if="{{isGetInfo}}">
+  <view class="tiku" wx:if="{{isGetInfo && isVerifiedUser}}">
     <text>当前题库：</text>
     <picker range="{{tikuData}}" value="{{tikuIndex}}" bindchange="changeTiku">{{tikuData[tikuIndex]}}</picker>
   </view>
@@ -19,7 +21,7 @@
     <view wx:for="{{usingTools}}">
       <block wx:for="{{item}}">
         <!-- 这里的 type1 是联系客服，其他功能都使用 type0 -->
-        <button wx:if="{{item.type==0}}" bindtap="{{item.active}}"><text style="line-height:1.5;padding-left:35rpx padding-right:35rpx;padding-top:45rpx;padding-bottom:45rpx;">{{item.name}}</text></button>
+        <button wx:if="{{item.type==0 && isVerifiedUser}}" bindtap="{{item.active}}"><text style="line-height:1.5;padding-left:35rpx padding-right:35rpx;padding-top:45rpx;padding-bottom:45rpx;">{{item.name}}</text></button>
         <button wx:if="{{item.type==1}}" open-type="contact"><text style="line-height:1.5;padding-left:35rpx padding-right:35rpx;padding-top:45rpx;padding-bottom:45rpx;">{{item.name}}</text></button>
       </block>
     </view>

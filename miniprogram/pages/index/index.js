@@ -10,7 +10,8 @@ Page({
     tikuIndex: 0,
     openid: "",
     total: 0,
-    correct: 0
+    correct: 0,
+    isVerifiedUser: false
   },
   onShow: function() {
     if(this.data.openid!=""){
@@ -61,8 +62,10 @@ Page({
       console.log("用户所在组：", res.data)
       var d = []
       if (res.data.length == 0) {
+        this.setData({isVerifiedUser:false})
         return ''
       }
+      this.setData({isVerifiedUser:true})
       console.log("所在组数量：", res.data[0].group.length)
       for (var i = 0; i < res.data[0].group.length; i++) {
         for (var j = 0; j < this.data.allTiku.length; j++) {
