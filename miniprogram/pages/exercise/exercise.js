@@ -31,6 +31,7 @@ Page({
       }
       this.data.questionList[0]["answerNumber"] = res.list[0]["answers"].length;
       console.log(this.data.questionList);
+      delete this.data.questionList[0].T
       this.setData({questionList:this.data.questionList});
       this.setData({end: false,submit: {"name":"提交","active":"submit"}});
     });
