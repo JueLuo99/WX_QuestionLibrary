@@ -80,10 +80,9 @@ Page({
     for(var i=0; i<qlist.length; i++){
       var item = qlist[i]["choices"];
       var t = true;
-      var tN = 0;
       for(var n=0;n<item.length;n++){
+        t = (item[n]["isTrue"] == item[n]["selected"]) && t
         if(item[n]["selected"]){
-          tN += 1
           if(item[n]["isTrue"]){
             if(qlist[i]["choices"][n]["class"].indexOf("true")<0){
               qlist[i]["choices"][n]["class"] = "choice true";
@@ -92,7 +91,6 @@ Page({
             if(qlist[i]["choices"][n]["class"].indexOf("false")<0){
               qlist[i]["choices"][n]["class"] = "choice false";
             }
-            t = false
           }
         }else{
           qlist[i]["choices"][n]["class"] = qlist[i]["choices"][n]["class"].replace(" true","").replace(" false","");
@@ -102,9 +100,6 @@ Page({
           if(qlist[i]["choices"][n]["class"].indexOf("true")<0){
             qlist[i]["choices"][n]["class"] = "choice true";
           }
-        }
-        if(tN!=qlist[i]["answerNumber"]){
-          t = false
         }
       }
       if(t){
