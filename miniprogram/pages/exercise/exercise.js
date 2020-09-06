@@ -25,10 +25,13 @@ Page({
     db.collection(this.data.tikuName).aggregate().sample({size: 1}).end().then(res => {
       console.log(res.list);
       this.data.questionList[0]["question"] = res.list[0]["question"];
+      this.data.questionList[0]["type"] = res.list[0]["type"];
       this.data.questionList[0]["choices"] = [];
       for(var i=0;i<res.list[0]["choices"].length;i++){
         this.data.questionList[0]["choices"].push({"answers":res.list[0]["choices"][i],"isTrue":res.list[0]["answers"].indexOf(res.list[0]["choices"][i])>-1,"class":"choice","selected":false});
       }
+      this.data.questionList[0]["question"] = "[" + this.data.questionList[0]["type"] + "]" + this.data.questionList[0]["question"]
+      this.data.questionList[0]["question"] = this.data.questionList[0]["question"].replace("[tf]","[判断题]").replace("[s]","[单选题]").replace("[m]","[多选题]")
       this.data.questionList[0]["answerNumber"] = res.list[0]["answers"].length;
       console.log(this.data.questionList);
       delete this.data.questionList[0].T
