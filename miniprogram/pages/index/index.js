@@ -26,14 +26,30 @@ Page({
     })
   },
   exercise: function() {
+    var tikuChineseName = this.data.tikuData[this.data.tikuIndex]
+    var collection = ""
+    for(var i=0;i<this.data.allTiku.length;i++){
+      if(this.data.allTiku[i].name.indexOf(tikuChineseName)>-1){
+        collection = this.data.allTiku[i].collection
+        break
+      }
+    }
     wx.navigateTo({
-      url: '../exercise/exercise?tikuName=' + this.data.allTiku[this.data.tikuIndex]["collection"]
+      url: '../exercise/exercise?tikuName=' + collection
     })
   },
 
   exam: function() {
+    var tikuChineseName = this.data.tikuData[this.data.tikuIndex]
+    var collection = ""
+    for(var i=0;i<this.data.allTiku.length;i++){
+      if(this.data.allTiku[i].name.indexOf(tikuChineseName)>-1){
+        collection = this.data.allTiku[i].collection
+        break
+      }
+    }
     wx.navigateTo({
-      url: '../exam/exam?tikuName=' + this.data.allTiku[this.data.tikuIndex]["collection"]
+      url: '../exam/exam?tikuName=' + collection
     })
   },
  
