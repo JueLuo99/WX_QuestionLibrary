@@ -7,33 +7,33 @@ Page({
   data: {
 
     // 这个 List 里面存抽到的题目的 ID
-    questionList: [{"question":"这是亿个题目","choices":[{"answers":"这是选项A","isTrue":false,"class":"choice","selected":false},{"answers":"选项BBBBBBBBBBBBB阿巴BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB1111111BBBBBBBBBBBBBBBBB","isTrue":true,"class":"choice","selected":false}],"answerNumber":1}],
+    questionList: [{"question":"Loading...","choices":[],"answerNumber":1}],
     end: false,
     // 这个存放问题题干
     question: "1",
     // 这个存放问题选项
     choices: ["AA", "BB", "CC", "DD"],
     // 按钮设定
-    submit: {"name":"提交","active":"submit"}
+    submit: {"name":"提交","active":"submit"},
+    tikuName: ""
   },
   getQuestion: function(){
     const db = wx.cloud.database({
       env: "tiku-na1fl"
     });
     const $ = db.command;
-
-  db.collection('ceshi').aggregate().sample({size: 1}).end().then(res => {
-    console.log(res.list);
-    this.data.questionList[0]["question"] = res.list[0]["question"];
-    this.data.questionList[0]["choices"] = [];
-    for(var i=0;i<res.list[0]["choices"].length;i++){
-      this.data.questionList[0]["choices"].push({"answers":res.list[0]["choices"][i],"isTrue":res.list[0]["answers"].indexOf(res.list[0]["choices"][i])>-1,"class":"choice","selected":false});
-    }
-    this.data.questionList[0]["answerNumber"] = res.list[0]["answers"].length;
-    console.log(this.data.questionList);
-    this.setData({questionList:this.data.questionList});
-    this.setData({end: false,submit: {"name":"提交","active":"submit"}});
-  });
+    db.collection(this.data.tikuName).aggregate().sample({size: 1}).end().then(res => {
+      console.log(res.list);
+      this.data.questionList[0]["question"] = res.list[0]["question"];
+      this.data.questionList[0]["choices"] = [];
+      for(var i=0;i<res.list[0]["choices"].length;i++){
+        this.data.questionList[0]["choices"].push({"answers":res.list[0]["choices"][i],"isTrue":res.list[0]["answers"].indexOf(res.list[0]["choices"][i])>-1,"class":"choice","selected":false});
+      }
+      this.data.questionList[0]["answerNumber"] = res.list[0]["answers"].length;
+      console.log(this.data.questionList);
+      this.setData({questionList:this.data.questionList});
+      this.setData({end: false,submit: {"name":"提交","active":"submit"}});
+    });
   },
   selectItem:function(d){
     if(this.data.end){
@@ -44,7 +44,7 @@ Page({
     var cindex = d["currentTarget"]["dataset"]["cindex"];
     var status = qlist[qindex]["choices"][cindex]["selected"];
     if(qlist[qindex]["answerNumber"]==1){
-      for(var i=0;i<qlist[qindex]["choices"].length;i++){
+      for(var i = 0;i<qlist[qindex]["choices"].length;i++){
         var s = qlist[qindex]["choices"][i]["selected"];
         qlist[qindex]["choices"][i]["selected"] = false;
         qlist[qindex]["choices"][i]["class"] = "choice";
@@ -71,10 +71,15 @@ Page({
     this.data.end = true;
     this.setData({end:this.data.end})
     var qlist = this.data.questionList;
+    var cNum = 0
+    var tNum = qlist.length
     for(var i=0; i<qlist.length; i++){
       var item = qlist[i]["choices"];
+      var t = true;
+      var tN = 0;
       for(var n=0;n<item.length;n++){
         if(item[n]["selected"]){
+          tN += 1
           if(item[n]["isTrue"]){
             if(qlist[i]["choices"][n]["class"].indexOf("true")<0){
               qlist[i]["choices"][n]["class"] = "choice true";
@@ -83,6 +88,7 @@ Page({
             if(qlist[i]["choices"][n]["class"].indexOf("false")<0){
               qlist[i]["choices"][n]["class"] = "choice false";
             }
+            t = false
           }
         }else{
           qlist[i]["choices"][n]["class"] = qlist[i]["choices"][n]["class"].replace(" true","").replace(" false","");
@@ -93,14 +99,31 @@ Page({
             qlist[i]["choices"][n]["class"] = "choice true";
           }
         }
+        if(tN!=qlist[i]["answerNumber"]){
+          t = false
+        }
+      }
+      if(t){
+        cNum += 1
+        qlist[i]["T"] = true
+      }else{
+        qlist[i]["T"] = false
       }
     }
     this.setData({questionList:qlist,submit: {"name":"下一题","active":"next"}});
+    wx.cloud.callFunction({name: "updateCorrect",data:{append:cNum}})
+    wx.cloud.callFunction({name: "updateTotal",data:{append:tNum}})
   },
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    if(options.tikuName == null){
+      wx.navigateBack()
+    }else{
+      this.setData({tikuName: options.tikuName})
+    }
     this.getQuestion();
   },
 
