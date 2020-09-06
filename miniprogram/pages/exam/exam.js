@@ -25,10 +25,10 @@ Page({
     }else{
       this.setData({tikuName: options.tikuName})
     }
-    var t = {"question":"这是亿个题目","choices":[{"answers":"这是选项A","isTrue":false,"class":"choice","selected":false},{"answers":"B","isTrue":true,"class":"choice","selected":false}],"answerNumber":1}
-    for(var i=0;i<10;i++){
-      this.data.qs.push(t)
-    }
+    // var t = {"question":"这是亿个题目","choices":[{"answers":"这是选项A","isTrue":false,"class":"choice","selected":false},{"answers":"B","isTrue":true,"class":"choice","selected":false}],"answerNumber":1}
+    // for(var i=0;i<10;i++){
+    //   this.data.qs.push(t)
+    // }
     this.setData({qs:this.data.qs})
     this.getQuestions()
   },
