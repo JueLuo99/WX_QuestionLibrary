@@ -10,3 +10,11 @@
 
 - [云开发文档](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/getting-started.html)
 
+## 项目介绍
+一个简单的题库系统，目前包含如下功能：
+- 多题库切换
+- 数据统计
+- 单题练习
+- 全真模拟
+- 联系客服
+
