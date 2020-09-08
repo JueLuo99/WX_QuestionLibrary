@@ -1,18 +1,26 @@
 <view class="container">
-  <button wx:if="{{!isGetInfo}}" class="getInfo" bindgetuserinfo="getInfo" open-type='getUserInfo'>获取授权</button>
+  <!-- <view wx:if="{{!isGetInfo}}">
+    <view class="messageBox">本题库仅对内部用户开放，需要通过微信登录鉴权后才可使用。如有疑问，请点击下方按钮联系管理员。</view>
+    <button class="getInfo" bindgetuserinfo="getInfo" open-type='getUserInfo'>获取授权</button>
+    <button open-type="contact">联系管理员</button>
+  </view> -->
   <!-- 个人信息模块 -->
-  <view wx:else class="userInfo" bindtap="clickBindInfo">
+  <view class="userInfo" bindtap="clickBindInfo">
     <image class="avatarBox" src="{{avatarUrl}}"></image>
     <view class="infoText">
       <text>{{userInfo.nickName}}</text>
-      <view wx:if="{{isVerifiedUser}}">答题数：{{total}}</view>
-      <view wx:if="{{isVerifiedUser}}">正确数：{{correct}}</view>
-      <view wx:if="{{!isVerifiedUser}}">未认证的用户！请将此页面截图并联系客服！</view>
-      <view wx:if="{{!isVerifiedUser}}">{{openid}}</view>
+      <view wx:if="{{isGetInfo&&isVerifiedUser}}">答题数：{{total}}</view>
+      <view wx:if="{{isGetInfo&&isVerifiedUser}}">正确数：{{correct}}</view>
+      <button wx:if="{{!isGetInfo}}" class="getInfo" bindgetuserinfo="getInfo" open-type='getUserInfo'>未登录用户，点此登录</button>
+      <view wx:if="{{!isGetInfo}}">未登录用户仅可使用体验题库！</view>
+      <view wx:if="{{!isGetInfo}}">未登录用户做题数据不会被保存！</view>
+      <view wx:if="{{isGetInfo&&!isVerifiedUser}}">未认证的用户！请将此页面截图并联系客服！</view>
+      <view wx:if="{{isGetInfo&&!isVerifiedUser}}">{{openid}}</view>
     </view>
   </view>
+
   <!-- 题库选择区 -->
-  <view class="tiku" wx:if="{{isGetInfo && isVerifiedUser}}">
+  <view class="tiku">
     <text>当前题库：</text>
     <picker range="{{tikuData}}" value="{{tikuIndex}}" bindchange="changeTiku">{{tikuData[tikuIndex]}}</picker>
   </view>
@@ -21,7 +29,7 @@
     <view wx:for="{{usingTools}}">
       <block wx:for="{{item}}">
         <!-- 这里的 type1 是联系客服，其他功能都使用 type0 -->
-        <button wx:if="{{item.type==0 && isVerifiedUser}}" bindtap="{{item.active}}"><text style="line-height:1.5;padding-left:35rpx padding-right:35rpx;padding-top:45rpx;padding-bottom:45rpx;">{{item.name}}</text></button>
+        <button wx:if="{{item.type==0}}" bindtap="{{item.active}}"><text style="line-height:1.5;padding-left:35rpx padding-right:35rpx;padding-top:45rpx;padding-bottom:45rpx;">{{item.name}}</text></button>
         <button wx:if="{{item.type==1}}" open-type="contact"><text style="line-height:1.5;padding-left:35rpx padding-right:35rpx;padding-top:45rpx;padding-bottom:45rpx;">{{item.name}}</text></button>
       </block>
     </view>

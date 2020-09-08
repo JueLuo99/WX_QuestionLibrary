@@ -8,9 +8,9 @@
   background: #fff;
   margin-top: 20rpx;
 }
-.getInfo{
-  margin: 25rpx;
-  width: 700rpx;
+button:not([size='mini']){
+  width: auto;
+  padding: 0;
 }
 .avatarBox{
   margin-left: 30rpx;
@@ -71,6 +71,14 @@ text{
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+.messageBox{
+  margin-top: 10rpx;
+  width: 660rpx;
+  background: #fff;
+  font-size: 20rpx;
+  border-radius: 15rpx;
+  padding: 10rpx;
 }
 picker{
   width: 100%;

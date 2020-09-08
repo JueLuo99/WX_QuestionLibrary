@@ -4,7 +4,7 @@ const app = getApp()
 Page({
   data: {
     avatarUrl: '../../images/user-unlogin.png',
-    usingTools: [],
+    usingTools: [[{ "name": "练习", "active": "exercise", "type": 0 },{ "name": "模拟", "active": "exam", "type": 0 }],[{ "name": "客服", "type": 1 }]],
     allTiku: [],
     tikuData: [],
     tikuIndex: 0,
@@ -79,6 +79,11 @@ Page({
       var d = []
       if (res.data.length == 0) {
         this.setData({isVerifiedUser:false})
+        for(var i=0;i<this.data.allTiku.length;i++){
+          if(this.data.allTiku[i]["collection"].indexOf("demo")>-1){
+            this.setData({tikuData: [this.data.allTiku[i]["name"]]})
+          }
+        }
         return ''
       }
       this.setData({isVerifiedUser:true})
@@ -97,7 +102,7 @@ Page({
   },
 
   onLoad: function() {
-    this.setData({ usingTools: [[]] })
+    // this.setData({ usingTools: [[]] })
     // 调用云函数获取用户的 openid
     wx.cloud.callFunction({
       name: 'login',
