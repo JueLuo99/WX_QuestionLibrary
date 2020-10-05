@@ -6,7 +6,7 @@ Page({
    */
   data: {
     // 单选题
-    num_of_s: 10,
+    num_of_s: 20,
     // 多选题
     num_of_m: 10,
     // 判断题
@@ -26,6 +26,7 @@ Page({
       this.setData({tikuName: options.tikuName})
     }
     this.setData({qs:[{"question":"Loading...","choices":[],"answerNumber":0}]})
+    console.log("当前题库：" + this.data.tikuName)
     this.getQuestions()
   },
   // 监听事件，监听Component选择改变事件
