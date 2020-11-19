@@ -4,7 +4,7 @@ const app = getApp()
 Page({
   data: {
     avatarUrl: '../../images/user-unlogin.png',
-    usingTools: [[{ "name": "练习", "active": "exercise", "type": 0 },{ "name": "模拟", "active": "exam", "type": 0 }],[{ "name": "客服", "type": 1 }]],
+    usingTools: [[{ "name": "练习", "active": "exercise", "type": 0 },{ "name": "模拟", "active": "exam", "type": 0 }],[{ "name": "背题模式", "active": "remember", "type": 0 }],[{ "name": "客服", "type": 1 }]],
     allTiku: [],
     tikuData: [],
     tikuIndex: 0,
@@ -38,7 +38,19 @@ Page({
       url: '../exercise/exercise?tikuName=' + collection
     })
   },
-
+  remember:function(){
+    var tikuChineseName = this.data.tikuData[this.data.tikuIndex]
+    var collection = ""
+    for(var i=0;i<this.data.allTiku.length;i++){
+      if(this.data.allTiku[i].name.indexOf(tikuChineseName)>-1){
+        collection = this.data.allTiku[i].collection
+        break
+      }
+    }
+    wx.navigateTo({
+      url: '../remember/remember?tikuName=' + collection
+    })
+  },
   exam: function() {
     var tikuChineseName = this.data.tikuData[this.data.tikuIndex]
     var collection = ""
@@ -127,17 +139,17 @@ Page({
                 userInfo: res.userInfo
               })
               this.setData({ isGetInfo: true })
-              this.setData({
-                usingTools: [
-                  [
-                    { "name": "练习", "active": "exercise", "type": 0 },
-                    { "name": "模拟", "active": "exam", "type": 0 }
-                  ],
-                  [
-                    { "name": "客服", "type": 1 }
-                  ]
-                ]
-              })
+              // this.setData({
+              //   usingTools: [
+              //     [
+              //       { "name": "练习", "active": "exercise", "type": 0 },
+              //       { "name": "模拟", "active": "exam", "type": 0 }
+              //     ],
+              //     [
+              //       { "name": "客服", "type": 1 }
+              //     ]
+              //   ]
+              // })
             }
           })
         }

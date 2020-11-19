@@ -1,0 +1,2 @@
+<scroll-view scroll-y="true" bindscrolltolower="updateData">
+</scroll-view>
