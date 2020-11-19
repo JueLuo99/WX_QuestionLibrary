@@ -1,1 +1,32 @@
-/* miniprogram/pages/remember/remember.wxss */
+page{
+  height: 100%;
+}
+.question{
+  background-color: #fff;
+  margin: 20rpx;
+  padding: 20rpx;
+  margin-top: 10rpx;
+  margin-bottom: 10rpx;
+  border-radius: 20rpx;
+}
+.question_choices{
+  font-size: small;
+}
+.question_answer{
+  background-color: #0f9;
+}
+.loadMore{
+  background-color: #fff;
+  margin: 20rpx;
+  padding: 20rpx;
+  border-radius: 20rpx;
+  text-align: center;
+  margin-top: 10rpx;
+  margin-bottom: 60rpx;
+}
+.loadMore::after{
+  background-color: #fee;
+  margin: 20rpx;
+  padding: 20rpx;
+  border-radius: 20rpx;
+}

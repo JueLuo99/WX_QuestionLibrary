@@ -1,2 +1,10 @@
-<scroll-view scroll-y="true" bindscrolltolower="updateData">
-</scroll-view>
+
+  <view class="question" wx:for="{{UIQuestions}}">
+    <view>{{item.question}}</view>
+    <view wx:for="{{item.choices}}" wx:for-item="zItem">
+      <text wx:if="{{zItem.isAnswer}}" class="question_choices question_answer">{{zItem.answer}}</text>
+      <text wx:else class="question_choices">{{zItem.answer}}</text>
+    </view>
+  </view>
+  <view wx:if="{{noMore}}" class="loadMore">我到底了</view>
+  <view wx:else class="loadMore" bindtap="updateData">加载更多</view>
