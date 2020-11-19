@@ -11,15 +11,16 @@ button {
   background: #fff;
 }
 
-button:hover{
+/* button:hover{
   background: #aaa;
-}
+} */
 
 button:focus{
   outline: 0;
 }
 
 button::after{
+  background: #aaa;
   border: none;
 }
 
