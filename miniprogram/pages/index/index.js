@@ -112,7 +112,22 @@ Page({
       this.setData({ tikuData: d })
     })
   },
-
+  flashAnswerNumbers: function(){
+    const db = wx.cloud.database()
+    const $ = db.command
+    db.collection('users').where({ openid: this.data.openid }).get().then(res => {
+      console.log("用户所在组：", res.data)
+      if (res.data.length == 0) {
+        this.setData({total: res.data[0].total,correct: res.data[0].correct})
+      }
+    })
+  },
+  cutOpenid:function(){
+    wx.setClipboardData({
+      data: this.data.openid,
+    })
+    console.log("run CutOpenid")
+  },
   onLoad: function() {
     // this.setData({ usingTools: [[]] })
     // 调用云函数获取用户的 openid
@@ -159,17 +174,17 @@ Page({
 
   getInfo: function(e) {
     this.setData({ userInfo: e.detail.userInfo, avatarUrl: e.detail.userInfo.avatarUrl, isGetInfo: true })
-    this.setData({
-        usingTools: [
-          [
-            { "name": "练习", "active": "exercise", "type": 0 },
-            { "name": "模拟", "active": "exam", "type": 0 }
-          ],
-          [
-            { "name": "客服", "type": 1 }
-          ]
-        ]
-      })
+    // this.setData({
+    //     usingTools: [
+    //       [
+    //         { "name": "练习", "active": "exercise", "type": 0 },
+    //         { "name": "模拟", "active": "exam", "type": 0 }
+    //       ],
+    //       [
+    //         { "name": "客服", "type": 1 }
+    //       ]
+    //     ]
+    //   })
     // 获取到并填充数据后自动刷新页面，避免用户手动刷新
     this.onPullDownRefresh()
   },

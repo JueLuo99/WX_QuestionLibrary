@@ -24,13 +24,25 @@ exports.main = async (event, context) => {
 
   // 获取 WX Context (微信调用上下文)，包括 OPENID、APPID、及 UNIONID（需满足 UNIONID 获取条件）等信息
   const wxContext = cloud.getWXContext()
-
+  const db = cloud.database()
+  var userexise = await db.collection("users").where({openid:wxContext.OPENID}).get()
+  var needUpdateInfo = false
+  if(userexise.data.length<=0){
+    try{
+      await db.collection("users").add({data:{"comment":"","group":["demo"],"openid":wxContext.OPENID,"correct":0,"total":0}})
+      needUpdateInfo = true
+    }catch(e){
+      console.log(e)
+    }
+  }
+  
   return {
     event,
     openid: wxContext.OPENID,
     appid: wxContext.APPID,
     unionid: wxContext.UNIONID,
     env: wxContext.ENV,
+    needupdateinfo: needUpdateInfo
   }
 }
 

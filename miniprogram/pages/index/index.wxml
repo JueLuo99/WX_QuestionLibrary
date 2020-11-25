@@ -14,14 +14,14 @@
       <view class="text" wx:if="{{!isGetInfo}}">未登录用户做题数据不会被保存！</view>
     </view>
   </button>
-  <view class="userInfo" bindtap="clickBindInfo" wx:else>
+  <view class="userInfo" bindtap="flashAnswerNumbers" bindlongtap="cutOpenid" wx:else>
     <image class="avatarBox" src="{{avatarUrl}}"></image>
     <view class="infoText">
       <text>{{userInfo.nickName}}</text>
-      <view wx:if="{{isGetInfo&&isVerifiedUser}}">答题数：{{total}}</view>
-      <view wx:if="{{isGetInfo&&isVerifiedUser}}">正确数：{{correct}}</view>
-      <view wx:if="{{isGetInfo&&!isVerifiedUser}}">未认证的用户！请将此页面截图并联系客服！</view>
-      <view wx:if="{{isGetInfo&&!isVerifiedUser}}">{{openid}}</view>
+      <view class="text"  wx:if="{{isGetInfo&&isVerifiedUser}}">答题数：{{total}}</view>
+      <view class="text"  wx:if="{{isGetInfo&&isVerifiedUser}}">正确数：{{correct}}</view>
+      <view class="text"  wx:if="{{isGetInfo&&!isVerifiedUser}}">未认证的用户！</view>
+      <view class="text"  wx:if="{{isGetInfo&&!isVerifiedUser}}">长按我即可复制ID然后联系客服！</view>
     </view>
   </view>
 
