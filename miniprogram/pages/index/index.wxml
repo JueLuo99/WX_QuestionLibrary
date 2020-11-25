@@ -5,15 +5,21 @@
     <button open-type="contact">联系管理员</button>
   </view> -->
   <!-- 个人信息模块 -->
-  <view class="userInfo" bindtap="clickBindInfo">
+  
+  <button wx:if="{{!isGetInfo}}" class="userInfo" bindgetuserinfo="getInfo" open-type='getUserInfo'>
+    <image class="avatarBox" src="{{avatarUrl}}"></image>
+    <view class="infoText">
+      <view>未登录用户，点此登录</view>
+      <view class="text" wx:if="{{!isGetInfo}}">未登录用户仅可使用体验题库！</view>
+      <view class="text" wx:if="{{!isGetInfo}}">未登录用户做题数据不会被保存！</view>
+    </view>
+  </button>
+  <view class="userInfo" bindtap="clickBindInfo" wx:else>
     <image class="avatarBox" src="{{avatarUrl}}"></image>
     <view class="infoText">
       <text>{{userInfo.nickName}}</text>
       <view wx:if="{{isGetInfo&&isVerifiedUser}}">答题数：{{total}}</view>
       <view wx:if="{{isGetInfo&&isVerifiedUser}}">正确数：{{correct}}</view>
-      <button wx:if="{{!isGetInfo}}" class="getInfo" bindgetuserinfo="getInfo" open-type='getUserInfo'>未登录用户，点此登录</button>
-      <view wx:if="{{!isGetInfo}}">未登录用户仅可使用体验题库！</view>
-      <view wx:if="{{!isGetInfo}}">未登录用户做题数据不会被保存！</view>
       <view wx:if="{{isGetInfo&&!isVerifiedUser}}">未认证的用户！请将此页面截图并联系客服！</view>
       <view wx:if="{{isGetInfo&&!isVerifiedUser}}">{{openid}}</view>
     </view>

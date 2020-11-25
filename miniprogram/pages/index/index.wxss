@@ -1,12 +1,16 @@
 .userInfo{
   border-radius: 25rpx;
+  min-width: 680rpx;
+  min-height: 200rpx;
+  width: 680rpx;
+  height: 200rpx;
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 680rpx;
-  height: 200rpx;
+  justify-content: start;
   background: #fff;
   margin-top: 20rpx;
+  padding: 0;
 }
 button:not([size='mini']){
   width: auto;
@@ -23,7 +27,7 @@ button:not([size='mini']){
   display: flex;
   flex-direction: column;
 }
-.infoText view{
+.infoText .text{
   color: #aaa;
   font-size: 0.5em;
 }
