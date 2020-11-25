@@ -27,8 +27,14 @@ Page({
       this.data.questionList[0]["question"] = res.list[0]["question"];
       this.data.questionList[0]["type"] = res.list[0]["type"];
       this.data.questionList[0]["choices"] = [];
+      var tmpChoices = []
       for(var i=0;i<res.list[0]["choices"].length;i++){
-        this.data.questionList[0]["choices"].push({"answers":res.list[0]["choices"][i],"isTrue":res.list[0]["answers"].indexOf(res.list[0]["choices"][i])>-1,"class":"choice","selected":false});
+        tmpChoices.push({"answers":res.list[0]["choices"][i],"isTrue":res.list[0]["answers"].indexOf(res.list[0]["choices"][i])>-1,"class":"choice","selected":false});
+      }
+      while(tmpChoices.length>0){
+        var i = parseInt(Math.random()*tmpChoices.length)
+        this.data.questionList[0]["choices"].push(tmpChoices[i])
+        tmpChoices.splice(i,1)
       }
       this.data.questionList[0]["question"] = "[" + this.data.questionList[0]["type"] + "]" + this.data.questionList[0]["question"]
       this.data.questionList[0]["question"] = this.data.questionList[0]["question"].replace("[tf]","[判断题]").replace("[s]","[单选题]").replace("[m]","[多选题]")

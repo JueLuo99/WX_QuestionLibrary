@@ -99,9 +99,15 @@ Page({
         var tItem = res.list[i]
         tItem.question = no + ". [单选题] " + tItem.question
         var choices = []
+        var tmpChoices = []
         console.log("Choices",tItem["choices"],tItem["choices"].length)
-        for(var o=0;o<tItem["choices"].length;o++){
+        // for(var o=0;o<tItem["choices"].length;o++){
+        //   choices.push({"answers":tItem["choices"][o],"isTrue":tItem["answers"].indexOf(tItem["choices"][o])>-1,"class":"choice","selected":false})
+        // }
+        while(tItem["choices"].length>0){
+          var o = parseInt(Math.random()*tItem["choices"].length)
           choices.push({"answers":tItem["choices"][o],"isTrue":tItem["answers"].indexOf(tItem["choices"][o])>-1,"class":"choice","selected":false})
+          tItem["choices"].splice(o,1)
         }
         tItem["choices"] = choices
         tItem["answerNumber"] = tItem["answers"].length
@@ -115,8 +121,13 @@ Page({
           tItem.question = no + ". [多选题] " + tItem.question
           var choices = []
           console.log("Choices",tItem["choices"],tItem["choices"].length)
-          for(var o=0;o<tItem["choices"].length;o++){
+          // for(var o=0;o<tItem["choices"].length;o++){
+          //   choices.push({"answers":tItem["choices"][o],"isTrue":tItem["answers"].indexOf(tItem["choices"][o])>-1,"class":"choice","selected":false})
+          // }
+          while(tItem["choices"].length>0){
+            var o = parseInt(Math.random()*tItem["choices"].length)
             choices.push({"answers":tItem["choices"][o],"isTrue":tItem["answers"].indexOf(tItem["choices"][o])>-1,"class":"choice","selected":false})
+            tItem["choices"].splice(o,1)
           }
           tItem["choices"] = choices
           tItem["answerNumber"] = tItem["answers"].length
@@ -130,8 +141,13 @@ Page({
             tItem.question = no + ". [判断题] " + tItem.question
             var choices = []
             console.log("Choices",tItem["choices"],tItem["choices"].length)
-            for(var o=0;o<tItem["choices"].length;o++){
+            // for(var o=0;o<tItem["choices"].length;o++){
+            //   choices.push({"answers":tItem["choices"][o],"isTrue":tItem["answers"].indexOf(tItem["choices"][o])>-1,"class":"choice","selected":false})
+            // }
+            while(tItem["choices"].length>0){
+              var o = parseInt(Math.random()*tItem["choices"].length)
               choices.push({"answers":tItem["choices"][o],"isTrue":tItem["answers"].indexOf(tItem["choices"][o])>-1,"class":"choice","selected":false})
+              tItem["choices"].splice(o,1)
             }
             tItem["choices"] = choices
             tItem["answerNumber"] = tItem["answers"].length
