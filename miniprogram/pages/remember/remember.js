@@ -22,11 +22,6 @@ Page({
     }else{
       this.setData({tikuName: options.tikuName})
       this.updateData()
-      
-      var query = wx.createSelectorQuery()
-      query.select("page").boundingClientRect(rect=>{
-        console.log("Rect",rect)
-      })
     }
   },
   updateData:function(){
