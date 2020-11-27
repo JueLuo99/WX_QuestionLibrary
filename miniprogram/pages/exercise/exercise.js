@@ -15,35 +15,56 @@ Page({
     choices: ["AA", "BB", "CC", "DD"],
     // 按钮设定
     submit: {"name":"提交","active":"submit"},
-    tikuName: ""
+    tikuName: "",
+    recordIds: [],
+    totalNum: 0,
+    load: false
   },
   getQuestion: function(){
-    const db = wx.cloud.database({
-      env: "tiku-na1fl"
-    });
-    const $ = db.command;
-    db.collection(this.data.tikuName).aggregate().sample({size: 1}).end().then(res => {
-      console.log(res.list);
-      this.data.questionList[0]["question"] = res.list[0]["question"];
-      this.data.questionList[0]["type"] = res.list[0]["type"];
-      this.data.questionList[0]["choices"] = [];
-      var tmpChoices = []
-      for(var i=0;i<res.list[0]["choices"].length;i++){
-        tmpChoices.push({"answers":res.list[0]["choices"][i],"isTrue":res.list[0]["answers"].indexOf(res.list[0]["choices"][i])>-1,"class":"choice","selected":false});
+    wx.cloud.callFunction({
+      name: "getExerciseQuestion",
+      data:{tikuName: this.data.tikuName, recordIds: this.data.recordIds},
+      success:res=>{
+        if(res.result.data.length==0){
+          wx.showModal({
+            title:"已完成",
+            content:"恭喜你已经完成本题库所有内容，是否重置数据重头开始？",
+            cancelText:"否",
+            confirmText:"是",
+            success:res=>{
+              if(res.confirm){
+                this.setData({recordIds:[]})
+                this.uploadAnswerRecord()
+              }
+              wx.navigateBack({
+                delta: 0,
+              })
+            }
+          })
+          return;
+        }
+        this.data.questionList[0]["_id"] = res.result.data[0]["_id"];
+        this.data.questionList[0]["question"] = res.result.data[0]["question"];
+        this.data.questionList[0]["type"] = res.result.data[0]["type"];
+        this.data.questionList[0]["choices"] = [];
+        var tmpChoices = []
+        for(var i=0;i<res.result.data[0]["choices"].length;i++){
+          tmpChoices.push({"answers":res.result.data[0]["choices"][i],"isTrue":res.result.data[0]["answers"].indexOf(res.result.data[0]["choices"][i])>-1,"class":"choice","selected":false});
+        }
+        while(tmpChoices.length>0){
+          var i = parseInt(Math.random()*tmpChoices.length)
+          this.data.questionList[0]["choices"].push(tmpChoices[i])
+          tmpChoices.splice(i,1)
+        }
+        this.data.questionList[0]["question"] = "[" + this.data.questionList[0]["type"] + "]" + this.data.questionList[0]["question"]
+        this.data.questionList[0]["question"] = this.data.questionList[0]["question"].replace("[tf]","[判断题]").replace("[s]","[单选题]").replace("[m]","[多选题]")
+        this.data.questionList[0]["answerNumber"] = res.result.data[0]["answers"].length;
+        console.log(this.data.questionList);
+        delete this.data.questionList[0].T
+        this.setData({questionList:this.data.questionList});
+        this.setData({end: false,submit: {"name":"提交","active":"submit"}});
       }
-      while(tmpChoices.length>0){
-        var i = parseInt(Math.random()*tmpChoices.length)
-        this.data.questionList[0]["choices"].push(tmpChoices[i])
-        tmpChoices.splice(i,1)
-      }
-      this.data.questionList[0]["question"] = "[" + this.data.questionList[0]["type"] + "]" + this.data.questionList[0]["question"]
-      this.data.questionList[0]["question"] = this.data.questionList[0]["question"].replace("[tf]","[判断题]").replace("[s]","[单选题]").replace("[m]","[多选题]")
-      this.data.questionList[0]["answerNumber"] = res.list[0]["answers"].length;
-      console.log(this.data.questionList);
-      delete this.data.questionList[0].T
-      this.setData({questionList:this.data.questionList});
-      this.setData({end: false,submit: {"name":"提交","active":"submit"}});
-    });
+    })
   },
   selectItem:function(d){
     if(this.data.end){
@@ -111,6 +132,9 @@ Page({
       if(t){
         cNum += 1
         qlist[i]["T"] = true
+        this.data.recordIds.push(qlist[i]["_id"])
+        this.setData({recordIds: this.data.recordIds})
+        this.uploadAnswerRecord()
       }else{
         qlist[i]["T"] = false
       }
@@ -129,55 +153,34 @@ Page({
     }else{
       this.setData({tikuName: options.tikuName})
     }
-    this.getQuestion();
+    const db = wx.cloud.database()
+    db.collection(this.data.tikuName).count().then(res=>{
+      this.setData({totalNum: res.total})
+    })
+    this.syncAnswerRecord();
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  // 获取历史答题记录
+  syncAnswerRecord: function(){
+    const db = wx.cloud.database()
+    db.collection("ExerciseAnswerRecords").where({tiku: this.data.tikuName}).get().then(res=>{
+      console.log("ExerciseAnswerRecords",res)
+      if(res.data.length==0){
+        db.collection("ExerciseAnswerRecords").add({data:{tiku: this.data.tikuName,ids:[]}})
+        this.setData({recordIds: []})
+      }else{
+        this.setData({recordIds: res.data[0].ids})
+      }
+      if(!this.data.load){
+        this.getQuestion();
+        this.data.load = true;
+      }
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  // 上传历史答题记录
+  uploadAnswerRecord: function(){
+    wx.cloud.callFunction({
+      name: "updateExerciseAnswerRecords",
+      data:{recordIds: this.data.recordIds,tikuName: this.data.tikuName}
+    })
   }
 })

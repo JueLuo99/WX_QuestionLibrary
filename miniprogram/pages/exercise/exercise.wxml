@@ -1,3 +1,4 @@
+<view class="progress"><view style="background-color:#0f0;width:{{recordIds.length/totalNum*100}}%;"><text wx:if="{{recordIds.length/totalNum*100>15}}">已答对{{recordIds.length}}题</text></view><text wx:if="{{recordIds.length/totalNum*100<90}}">剩余{{totalNum-recordIds.length}}题</text></view>
 <view class="container">
     <view wx:for="{{questionList}}" wx:for-index="qIndex" wx:for-item="item">
         <view class="question {{item.T}}">

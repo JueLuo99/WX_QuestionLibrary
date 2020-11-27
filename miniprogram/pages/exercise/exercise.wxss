@@ -38,3 +38,10 @@
 .selected{
   background: #ccc;
 }
+.progress{
+  width: 750rpx;
+  background-color: #fff;
+  display: flex;
+  font-size: smaller;
+  text-align: center;
+}
