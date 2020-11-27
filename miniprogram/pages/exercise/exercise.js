@@ -18,7 +18,8 @@ Page({
     tikuName: "",
     recordIds: [],
     totalNum: 0,
-    load: false
+    load: false,
+    error: false
   },
   getQuestion: function(){
     wx.cloud.callFunction({
@@ -93,6 +94,7 @@ Page({
     this.setData({questionList: qlist});
   },
   next:function(){
+    this.setData({error:false})
     this.getQuestion();
   },
   submit: function(){
@@ -137,6 +139,7 @@ Page({
         this.uploadAnswerRecord()
       }else{
         qlist[i]["T"] = false
+        this.setData({error:true})
       }
     }
     this.setData({questionList:qlist,submit: {"name":"下一题","active":"next"}});
@@ -181,6 +184,14 @@ Page({
     wx.cloud.callFunction({
       name: "updateExerciseAnswerRecords",
       data:{recordIds: this.data.recordIds,tikuName: this.data.tikuName}
+    })
+  },
+  addWrongQuestion: function(){
+    const db = wx.cloud.database()
+    db.collection("WrongQuestions").where({id:this.data.questionList[0]._id}).count().then(res=>{
+      if(res.total==0){
+        db.collection("WrongQuestions").add({data:{tikuName:this.data.tikuName,id:this.data.questionList[0]._id}})
+      }
     })
   }
 })

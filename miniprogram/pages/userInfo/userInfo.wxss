@@ -1,0 +1,31 @@
+.userInfo{
+  border-radius: 20rpx;
+  width:680rpx;
+  background-color: #fff;
+  margin:15rpx;
+  padding: 20rpx;
+  text-align: center;
+}
+.SevenDay{
+  display: flex;
+  align-items: flex-end;
+  font-size: smaller;
+}
+.infoItem{
+  margin: 10rpx;
+}
+hr{
+  display: block;
+  width: 100%;
+  height: 1rpx;
+  background-color: #aaa;
+}
+button{
+  margin:10rpx;
+  min-width: 720rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -10,4 +10,5 @@
     </view>
     
     <view class="submit" bindtap="{{submit.active}}">{{submit.name}}</view>
+    <view class="submit" wx:if="{{error}}" bindtap="addWrongQuestion" style="background-color:#f55">加入错题本</view>
 </view>

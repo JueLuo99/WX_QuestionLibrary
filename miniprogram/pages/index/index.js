@@ -121,6 +121,12 @@ Page({
         this.setData({total: res.data[0].total,correct: res.data[0].correct})
       }
     })
+    this.navigateToInfo()
+  },
+  navigateToInfo: function(){
+    wx.navigateTo({
+      url: '../userInfo/userInfo?allCorrect='+this.data.correct+"&allTotal="+this.data.total+"&tikuName="+this.data.allTiku[this.data.tikuIndex].collection,
+    })
   },
   cutOpenid:function(){
     wx.setClipboardData({

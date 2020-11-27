@@ -1,0 +1,29 @@
+<!-- 个人数据 -->
+<view class="userInfo">
+  <view class="infoItem">
+    <view>
+      <text>今日正确：{{todayCorrect}}个</text>|<text>今日答题：{{todayTotal}}个</text>
+    </view>
+    <view>
+      <text>总正确：{{allCorrect}}个</text>|<text>总答题：{{allTotal}}个</text>
+    </view>
+  </view>
+  <hr />
+  <view>七日数据</view>
+  <view class="SevenDay infoItem">
+    <view style="width:96rpx;background-color:#0f0;height:{{item.TotalHeight}}rpx;" wx:for="{{_7DayDate}}">
+      <view style="width:96rpx;background-color:#f00;height:{{item.RedHeight}}rpx;">
+        <text wx:if="{{(item.total-item.correct)!=0}}">{{item.total-item.correct}}</text>
+      </view>
+      <text wx:if="{{item.correct!=0}}">{{item.correct}}</text>
+    </view>
+  </view>
+  <view class="SevenDay infoItem">
+    <view style="width:96rpx;" wx:for="{{_7DayDate}}">
+      <text>{{item.date}}</text>
+    </view>
+  </view>
+</view>
+<button bindtap="gotoWrongBook">错题本</button>
+<button wx:if="{{isTeacher}}">题库管理</button>
+<button wx:if="{{isAdmin}}">数据管理</button>

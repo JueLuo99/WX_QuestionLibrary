@@ -7,9 +7,6 @@ cloud.init()
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   const db = cloud.database()
-  const _ = db.command;
-  res = await db.collection(event.tikuName).aggregate().match({_id: _.nin(event.recordIds)}).sample({size: 1}).end()
-  return {
-    data: res.list
-  }
+  var res = await db.collection("WrongQuestions").where({_openid:wxContext.OPENID,tikuName:event.tikuName}).get()
+  return {data:res.data}
 }

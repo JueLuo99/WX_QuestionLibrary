@@ -9,12 +9,16 @@ exports.main = async (event, context) => {
   var append = event.append
   if(append != null){
     const db = cloud.database();
-    db.collection("users").where({openid: event.userInfo.openId}).get().then(res => {
-      console.log("当前正确值", res.data[0].correct)
-      var correct = res.data[0].correct + append
-      db.collection("users").where({openid: event.userInfo.openId}).update({data:{correct: correct}})
-      return {ok:"OK"}
-    })
+    const _ = db.command;
+    await db.collection("users").where({openid: event.userInfo.openId}).update({data:{correct: _.inc(append)}});
+    var today = new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate());
+    var d = await db.collection("AnswerRecords").where({_openid:wxContext.OPENID,date: today}).count();
+    if(d.total==0){
+      await db.collection("AnswerRecords").add({data:{_openid:wxContext.OPENID,date: today,correct:append,total:0}})
+    }else{
+      await db.collection("AnswerRecords").where({_openid:wxContext.OPENID,date: today}).update({data:{correct:_.inc(append)}})
+    }
+    return {ok:"OK"}
   }else{
     return {
       event,
