@@ -8,7 +8,9 @@ Page({
     endIndex: 0,
     UIQuestions: [],
     tikuName:"",
-    noMore:false
+    noMore:false,
+    scrollTop:0,
+    load: false
   },
 
   /**
@@ -20,6 +22,11 @@ Page({
     }else{
       this.setData({tikuName: options.tikuName})
       this.updateData()
+      
+      var query = wx.createSelectorQuery()
+      query.select("page").boundingClientRect(rect=>{
+        console.log("Rect",rect)
+      })
     }
   },
   updateData:function(){
@@ -44,6 +51,25 @@ Page({
         this.data.UIQuestions.push(newQuestion)
       }
       this.setData({UIQuestions:this.data.UIQuestions})
+      if(!this.data.load){
+        wx.getStorage({
+          key: 'ReadScrollTop-'+this.data.tikuName,
+          success: res=>{
+            if (this.data.UIQuestions.length >= res.data.length){
+              this.setData({load:true})
+              wx.pageScrollTo({
+                duration: 100,
+                scrollTop:res.data.top
+              })
+            }else{
+              this.updateData()
+            }
+          },
+          fail:res=>{
+            this.setData({load:true})
+          }
+        })
+      }
     })
   },
   /**
@@ -71,7 +97,15 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+  },
+  onPageScroll: function(e){
+    if(this.data.load){
+      this.setData({scrollTop:e.scrollTop})
+    }
+    wx.setStorage({
+      data: {top:e.scrollTop,length:this.data.UIQuestions.length},
+      key: 'ReadScrollTop-'+this.data.tikuName,
+    })
   },
 
   /**
