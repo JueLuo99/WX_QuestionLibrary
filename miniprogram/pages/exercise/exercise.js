@@ -190,7 +190,11 @@ Page({
     const db = wx.cloud.database()
     db.collection("WrongQuestions").where({id:this.data.questionList[0]._id}).count().then(res=>{
       if(res.total==0){
-        db.collection("WrongQuestions").add({data:{tikuName:this.data.tikuName,id:this.data.questionList[0]._id}})
+        db.collection("WrongQuestions").add({data:{tikuName:this.data.tikuName,id:this.data.questionList[0]._id}}).then(res=>{
+          wx.showToast({
+            title: '添加成功'
+          })
+        })
       }
     })
   }

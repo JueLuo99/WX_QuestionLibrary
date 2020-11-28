@@ -19,7 +19,7 @@ Page({
   },
   getWrongQuestions: function(){
     this.data.endIndex = 0
-    this.data.UIQuestions = []
+    this.data.UIQuestions = [])
     wx.cloud.callFunction({
       name:"getWrongQuestions",
       data:{tikuName:this.data.tikuName},
@@ -28,6 +28,7 @@ Page({
         for(var i=0;i<res.result.data.length;i++){
           ids.push(res.result.data[i].id)
         }
+        console.log("IDS", ids)
         const db = wx.cloud.database()
         const _ = db.command
         db.collection(this.data.tikuName).where({_id:_.in(ids)}).get().then(res=>{

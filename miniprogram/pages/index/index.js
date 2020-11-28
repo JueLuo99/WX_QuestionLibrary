@@ -124,8 +124,16 @@ Page({
     this.navigateToInfo()
   },
   navigateToInfo: function(){
+    var tikuChineseName = this.data.tikuData[this.data.tikuIndex]
+    var collection = ""
+    for(var i=0;i<this.data.allTiku.length;i++){
+      if(this.data.allTiku[i].name.indexOf(tikuChineseName)>-1){
+        collection = this.data.allTiku[i].collection
+        break
+      }
+    }
     wx.navigateTo({
-      url: '../userInfo/userInfo?allCorrect='+this.data.correct+"&allTotal="+this.data.total+"&tikuName="+this.data.allTiku[this.data.tikuIndex].collection,
+      url: '../userInfo/userInfo?allCorrect='+this.data.correct+"&allTotal="+this.data.total+"&tikuName="+collection,
     })
   },
   cutOpenid:function(){
