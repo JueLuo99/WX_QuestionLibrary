@@ -19,7 +19,7 @@ Page({
   },
   getWrongQuestions: function(){
     this.data.endIndex = 0
-    this.data.UIQuestions = [])
+    this.data.UIQuestions = []
     wx.cloud.callFunction({
       name:"getWrongQuestions",
       data:{tikuName:this.data.tikuName},
