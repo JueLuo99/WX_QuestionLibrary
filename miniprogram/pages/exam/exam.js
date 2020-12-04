@@ -20,6 +20,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '生成试卷',
+    })
     if(options.tikuName == null){
       wx.navigateBack()
     }else{
@@ -154,6 +157,9 @@ Page({
             this.data.qs.push(tItem)
           }
           this.setData({qs: this.data.qs})
+          wx.hideLoading({
+            success: (res) => {},
+          })
         });
       });
     });
