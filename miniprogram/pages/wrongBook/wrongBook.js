@@ -14,6 +14,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '加载错题本',
+    })
     this.setData({tikuName: options.tikuName})
     this.getWrongQuestions()
   },
@@ -49,6 +52,9 @@ Page({
             this.data.UIQuestions.push(newQuestion)
           }
           this.setData({UIQuestions:this.data.UIQuestions})
+          wx.hideLoading({
+            success: (res) => {},
+          })
         })
       }
     })
