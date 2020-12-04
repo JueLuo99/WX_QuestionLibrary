@@ -17,6 +17,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '正在加载页面',
+    })
     if(options.tikuName == null){
       wx.navigateBack()
     }else{
@@ -55,6 +58,9 @@ Page({
               wx.pageScrollTo({
                 duration: 100,
                 scrollTop:res.data.top
+              })
+              wx.hideLoading({
+                success: (res) => {},
               })
             }else{
               this.updateData()
