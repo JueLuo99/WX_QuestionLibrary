@@ -19,7 +19,8 @@ Page({
     recordIds: [],
     totalNum: 0,
     load: false,
-    error: false
+    error: false,
+    canGetQuestion: false
   },
   getQuestion: function(){
     wx.cloud.callFunction({
@@ -64,6 +65,10 @@ Page({
         delete this.data.questionList[0].T
         this.setData({questionList:this.data.questionList});
         this.setData({end: false,submit: {"name":"提交","active":"submit"}});
+        wx.hideLoading({
+          success: (res) => {},
+        })
+        this.data.canGetQuestion = true
       }
     })
   },
@@ -94,8 +99,14 @@ Page({
     this.setData({questionList: qlist});
   },
   next:function(){
-    this.setData({error:false})
-    this.getQuestion();
+    if(this.data.canGetQuestion){
+      this.data.canGetQuestion = false
+      wx.showLoading({
+        title: '正在获取题目',
+      })
+      this.setData({error:false})
+      this.getQuestion();
+    }
   },
   submit: function(){
     if(this.data.end){
@@ -143,8 +154,7 @@ Page({
       }
     }
     this.setData({questionList:qlist,submit: {"name":"下一题","active":"next"}});
-    wx.cloud.callFunction({name: "updateCorrect",data:{append:cNum}})
-    wx.cloud.callFunction({name: "updateTotal",data:{append:tNum}})
+    wx.cloud.callFunction({name: "updateCorrect",data:{append:cNum},success:res=>{wx.cloud.callFunction({name: "updateTotal",data:{append:tNum}})}})
   },
 
   /**
