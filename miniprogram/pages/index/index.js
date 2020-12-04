@@ -110,6 +110,9 @@ Page({
       console.log("用户可访问题库：", d)
       this.setData({total: res.data[0].total,correct: res.data[0].correct})
       this.setData({ tikuData: d })
+      wx.hideLoading({
+        success: (res) => {},
+      })
     })
   },
   flashAnswerNumbers: function(){
@@ -145,6 +148,9 @@ Page({
   onLoad: function() {
     // this.setData({ usingTools: [[]] })
     // 调用云函数获取用户的 openid
+    wx.showLoading({
+      title: '正在打开',
+    })
     wx.cloud.callFunction({
       name: 'login',
       complete: res => {
