@@ -2,10 +2,10 @@
 <view class="userInfo">
   <view class="infoItem">
     <view>
-      <text>今日正确：{{todayCorrect}}个</text>|<text>今日答题：{{todayTotal}}个</text>
+      <text>今日正确：{{todayCorrect}}个</text> | <text>今日答题：{{todayTotal}}个</text>
     </view>
     <view>
-      <text>总正确：{{allCorrect}}个</text>|<text>总答题：{{allTotal}}个</text>
+      <text>累计正确：{{allCorrect}}个</text> | <text>累计答题：{{allTotal}}个</text>
     </view>
   </view>
   <hr />
