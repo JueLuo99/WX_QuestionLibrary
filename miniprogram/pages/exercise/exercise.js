@@ -161,16 +161,25 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '正在加载题目',
+    });
+
     if(options.tikuName == null){
       wx.navigateBack()
     }else{
       this.setData({tikuName: options.tikuName})
     }
+    
     const db = wx.cloud.database()
     db.collection(this.data.tikuName).count().then(res=>{
       this.setData({totalNum: res.total})
     })
     this.syncAnswerRecord();
+
+    // wx.hideLoading({
+    //   success: (res) => {},
+    // });
   },
   // 获取历史答题记录
   syncAnswerRecord: function(){
