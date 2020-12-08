@@ -7,9 +7,9 @@ Page({
   data: {
     endIndex: 0,
     UIQuestions: [],
-    tikuName:"",
-    noMore:false,
-    scrollTop:0,
+    tikuName: "",
+    noMore: false,
+    scrollTop: 0,
     load: false
   },
 
@@ -20,54 +20,73 @@ Page({
     wx.showLoading({
       title: '正在加载页面',
     })
-    if(options.tikuName == null){
+    if (options.tikuName == null) {
       wx.navigateBack()
-    }else{
-      this.setData({tikuName: options.tikuName})
+    } else {
+      this.setData({
+        tikuName: options.tikuName
+      })
       this.updateData()
     }
   },
-  updateData:function(){
+  updateData: function () {
     console.log("UpdateData is Run.")
     const db = wx.cloud.database();
     const $ = db.command;
-    db.collection(this.data.tikuName).skip(this.data.endIndex).get().then(res=>{
-      if(res.data.length<1){
-        this.setData({noMore:true})
+    db.collection(this.data.tikuName).skip(this.data.endIndex).get().then(res => {
+      if (res.data.length < 1) {
+        this.setData({
+          noMore: true
+        })
       }
-      for(var i=0;i<res.data.length;i++){
+      for (var i = 0; i < res.data.length; i++) {
         this.data.endIndex += 1
-        var newQuestion = {"question":"","choices":[]}
-        newQuestion.question = (this.data.endIndex+".["+ res.data[i].type +"] "+res.data[i].question).replace("[tf]","[判断题]").replace("[s]","[单选题]").replace("[m]","[多选题]")
-        for(var ci=0;ci<res.data[i].choices.length;ci++){
-          if(res.data[i].answers.indexOf(res.data[i].choices[ci])>-1){
-            newQuestion.choices.push({"answer":res.data[i].choices[ci],"isAnswer":true})
-          }else{
-            newQuestion.choices.push({"answer":res.data[i].choices[ci],"isAnswer":false})
+        var newQuestion = {
+          "question": "",
+          "choices": []
+        }
+        newQuestion.question = (this.data.endIndex + ".[" + res.data[i].type + "] " + res.data[i].question).replace("[tf]", "[判断题]").replace("[s]", "[单选题]").replace("[m]", "[多选题]")
+        for (var ci = 0; ci < res.data[i].choices.length; ci++) {
+          if (res.data[i].answers.indexOf(res.data[i].choices[ci]) > -1) {
+            newQuestion.choices.push({
+              "answer": res.data[i].choices[ci],
+              "isAnswer": true
+            })
+          } else {
+            newQuestion.choices.push({
+              "answer": res.data[i].choices[ci],
+              "isAnswer": false
+            })
           }
         }
         this.data.UIQuestions.push(newQuestion)
       }
-      this.setData({UIQuestions:this.data.UIQuestions})
-      if(!this.data.load){
+      this.setData({
+        UIQuestions: this.data.UIQuestions
+      })
+      if (!this.data.load) {
         wx.getStorage({
-          key: 'ReadScrollTop-'+this.data.tikuName,
-          success: res=>{
-            if (this.data.UIQuestions.length >= res.data.length){
-              this.setData({load:true})
+          key: 'ReadScrollTop-' + this.data.tikuName,
+          success: res => {
+            if (this.data.UIQuestions.length >= res.data.length) {
+              this.setData({
+                load: true
+              })
               wx.pageScrollTo({
                 duration: 100,
-                scrollTop:res.data.top
+                scrollTop: res.data.top
               })
               wx.hideLoading({
                 success: (res) => {},
               })
-            }else{
+            } else {
               this.updateData()
             }
           },
-          fail:res=>{
-            this.setData({load:true})
+          fail: res => {
+            this.setData({
+              load: true
+            })
           }
         })
       }
@@ -97,15 +116,19 @@ Page({
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
-  },
-  onPageScroll: function(e){
-    if(this.data.load){
-      this.setData({scrollTop:e.scrollTop})
+  onUnload: function () {},
+  onPageScroll: function (e) {
+    if (this.data.load) {
+      this.setData({
+        scrollTop: e.scrollTop
+      })
     }
     wx.setStorage({
-      data: {top:e.scrollTop,length:this.data.UIQuestions.length},
-      key: 'ReadScrollTop-'+this.data.tikuName,
+      data: {
+        top: e.scrollTop,
+        length: this.data.UIQuestions.length
+      },
+      key: 'ReadScrollTop-' + this.data.tikuName,
     })
   },
 
