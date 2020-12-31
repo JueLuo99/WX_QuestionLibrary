@@ -334,7 +334,7 @@ Page({
                 })
               }
               break;
-            case "TiKuInvitation":
+            case "TiKuInvitationca":
               var __id=res.result.split(":")[1]
               var tikuname = ""
               var tiku = ""
@@ -371,6 +371,21 @@ Page({
                     wx.showToast({
                       title: '你放弃了加入'+tikuname+'！',
                       icon: "none"
+                    })
+                  }
+                }
+              })
+              break;
+            default:
+              console.log(res.result)
+              wx.showModal({
+                title: "二维码内容",
+                content: res.result,
+                confirmText: "复制",
+                success: r=>{
+                  if(r.confirm){
+                    wx.setClipboardData({
+                      data: res.result,
                     })
                   }
                 }
