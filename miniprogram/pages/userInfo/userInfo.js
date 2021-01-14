@@ -58,6 +58,11 @@ Page({
       url: '../wrongBook/wrongBook?tikuName=' + this.data.tikuName,
     })
   },
+  gotoExamHistory: function(){
+    wx.navigateTo({
+      url: '../examHistory/examHistory?tikuName=' + this.data.tikuName,
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

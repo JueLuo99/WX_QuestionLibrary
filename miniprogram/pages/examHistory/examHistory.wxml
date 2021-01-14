@@ -1,0 +1,4 @@
+<view class="record" wx:for="{{records}}" data-id="{{item.id}}" bindtap="intoRecord">
+  <view class="time">{{item.time}}</view>
+  <view class="title">答题：{{item.total}} 正确： {{item.correct}}</view>
+</view>

@@ -7,7 +7,10 @@ Page({
   data: {
     tikuName: "",
     UIQuestions: [],
-    endIndex: 0
+    ids: [],
+    endIndex: 0,
+    left: 0,
+    flashNum:10,
   },
 
   /**
@@ -31,52 +34,47 @@ Page({
         tikuName: this.data.tikuName
       },
       success: res => {
-        var ids = []
-        for (var i = 0; i < res.result.data.length; i++) {
-          ids.push(res.result.data[i].id)
-        }
-        console.log("IDS", ids)
-        const db = wx.cloud.database()
-        const _ = db.command
-        db.collection(this.data.tikuName).where({
-          _id: _.in(ids)
-        }).get().then(res => {
-          if (res.data.length < 1) {
-            this.setData({
-              noMore: true
+        console.log(res.result)
+        this.setData({ids: res.result})
+        this.flashWrong()
+      }
+    })
+  },
+  flashWrong: function(){  
+    wx.showLoading({
+      title: '加载错题本',
+    })
+    const db = wx.cloud.database()
+    const _ = db.command
+    db.collection(this.data.tikuName).where({_id:_.in(this.data.ids.slice(this.data.endIndex,this.data.endIndex+this.data.flashNum))}).get().then(res=>{
+      console.log(this.data.ids.slice(this.data.endIndex,this.data.endIndex+this.data.flashNum))
+      var qs = res.data
+      for(var i in qs){
+        var newQuestion = {"question": "", "choices": [], id:qs[i]._id}
+        newQuestion.question = ((this.data.endIndex + parseInt(i) + 1) + ".[" +qs[i].type + "] " +qs[i].question).replace("[tf]", "[判断题]").replace("[s]", "[单选题]").replace("[m]", "[多选题]")
+        for (var ci = 0; ci <qs[i].choices.length; ci++) {
+          if (qs[i].answers.indexOf(qs[i].choices[ci]) > -1) {
+            newQuestion.choices.push({
+              "answer":qs[i].choices[ci],
+              "isAnswer": true
+            })
+          } else {
+            newQuestion.choices.push({
+              "answer":qs[i].choices[ci],
+              "isAnswer": false
             })
           }
-          for (var i = 0; i < res.data.length; i++) {
-            this.data.endIndex += 1
-            var newQuestion = {
-              "question": "",
-              "choices": [],
-              id: res.data[i]._id
-            }
-            newQuestion.question = (this.data.endIndex + ".[" + res.data[i].type + "] " + res.data[i].question).replace("[tf]", "[判断题]").replace("[s]", "[单选题]").replace("[m]", "[多选题]")
-            for (var ci = 0; ci < res.data[i].choices.length; ci++) {
-              if (res.data[i].answers.indexOf(res.data[i].choices[ci]) > -1) {
-                newQuestion.choices.push({
-                  "answer": res.data[i].choices[ci],
-                  "isAnswer": true
-                })
-              } else {
-                newQuestion.choices.push({
-                  "answer": res.data[i].choices[ci],
-                  "isAnswer": false
-                })
-              }
-            }
-            this.data.UIQuestions.push(newQuestion)
-          }
-          this.setData({
-            UIQuestions: this.data.UIQuestions
-          })
-          wx.hideLoading({
-            success: (res) => {},
-          })
-        })
+        }
+        this.data.UIQuestions.push(newQuestion)
       }
+      this.setData({
+        UIQuestions: this.data.UIQuestions,
+        endIndex: this.data.UIQuestions.length,
+        left: this.data.ids.length - this.data.UIQuestions.length
+      })
+      wx.hideLoading({
+        success: (res) => {},
+      })
     })
   },
   deleteWrongQuestion: function (e) {

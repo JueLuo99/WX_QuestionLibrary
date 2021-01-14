@@ -25,5 +25,6 @@
   </view>
 </view>
 <button bindtap="gotoWrongBook">错题本</button>
+<button bindtap="gotoExamHistory">模拟记录</button>
 <button wx:if="{{isTeacher}}">题库管理</button>
 <button wx:if="{{isAdmin}}">数据管理</button>

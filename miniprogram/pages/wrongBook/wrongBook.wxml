@@ -6,3 +6,4 @@
     <text wx:else class="question_choices">{{zItem.answer}}</text>
   </view>
 </view>
+<view class="flash" wx:if="{{left>0}}" bindtap="flashWrong">从剩下 {{left}} 个中刷新 {{flashNum}} 个</view>

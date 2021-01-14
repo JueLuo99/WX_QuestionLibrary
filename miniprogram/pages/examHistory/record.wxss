@@ -1,0 +1,37 @@
+.record{
+  width: 650rpx;
+  padding: 25rpx;
+  margin: 10rpx 25rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  z-index: 0;
+}
+.title{
+  font-size: 35rpx;
+  z-index: 2;
+}
+.choice{
+  font-size: 25rpx;
+  display: flex;
+  z-index: 2;
+}
+.opt{
+  width: 50rpx;
+}
+.resultView{
+  position: relative;
+}
+.result{
+  position: absolute;
+  width: 200rpx;
+  height: 150rpx;
+  right: 0;
+  top: -150rpx;
+  transform: rotate(-30deg);
+  z-index: 1;
+  opacity: 0.5;
+}
+.info{
+  color: #aaa;
+}

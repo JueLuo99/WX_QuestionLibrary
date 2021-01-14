@@ -34,3 +34,11 @@ page{
   text-align: center;
   color: #777;
 }
+.flash{
+  width: 660rpx;
+  padding: 20rpx;
+  border-radius: 20rpx;
+  text-align: center;
+  color: #55f;
+  text-decoration: underline;
+}

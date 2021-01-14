@@ -7,6 +7,11 @@ cloud.init()
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   const db = cloud.database()
-  var res = await db.collection("WrongQuestions").where({_openid:wxContext.OPENID,tikuName:event.tikuName}).get()
-  return {data:res.data}
+  const _ = db.command
+  var res = await db.collection("WrongQuestions").where({_openid:wxContext.OPENID,tikuName:event.tikuName}).limit(1000).get()
+  var ids = []
+  for(var i in res.data){
+    ids.push(res.data[i].id)
+  }
+  return ids
 }

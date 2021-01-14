@@ -5,7 +5,9 @@
     "pages/exam/exam",
     "pages/remember/remember",
     "pages/userInfo/userInfo",
-    "pages/wrongBook/wrongBook"
+    "pages/wrongBook/wrongBook",
+    "pages/examHistory/examHistory",
+    "pages/examHistory/record"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

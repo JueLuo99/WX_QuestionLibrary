@@ -1,0 +1,14 @@
+.record{
+  width: 700rpx;
+  margin: 10rpx 25rpx;
+  background-color: #fff;
+  border-radius: 15rpx;
+}
+.title{
+  padding: 0rpx 15rpx 15rpx 15rpx;
+  font-size: 50rpx;
+}
+.time{
+  padding: 15rpx 15rpx 0rpx 15rpx;
+  font-size: 30rpx;
+}

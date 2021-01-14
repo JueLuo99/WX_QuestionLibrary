@@ -13,7 +13,8 @@ Page({
     num_of_tf: 10,
     qs: [],
     tikuName: "WangAn",
-    end: false
+    end: false,
+    addR: false,
   },
 
   /**
@@ -100,14 +101,23 @@ Page({
       name: "updateCorrect",
       data: {
         append: cNum
+      },
+      success:()=>{
+        wx.cloud.callFunction({
+          name: "updateTotal",
+          data: {
+            append: tNum
+          }
+        })
       }
     })
-    wx.cloud.callFunction({
-      name: "updateTotal",
-      data: {
-        append: tNum
-      }
-    })
+    const db = wx.cloud.database()
+    db.collection("ExamHistoryRecords").add({data:{
+      record: this.data.qs,
+      tiku: this.data.tikuName,
+      time: new Date(),
+      correct: cNum
+    }})
     wx.setNavigationBarTitle({
       title: "答题" + tNum + ",正确" + cNum
     })
@@ -218,52 +228,20 @@ Page({
     });
 
   },
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  addWrong: function(e){
+    var k = 0;
+    for(var i in this.data.qs){
+      if(!this.data.qs[i].T){
+        const db = wx.cloud.database()
+        db.collection("WrongQuestions").add({data:{id: this.data.qs[i]._id , tikuName: this.data.tikuName}})
+        k+=1
+      }
+    }
+    wx.showToast({
+      title: '添加到错题本 '+k+" 题",
+      icon: "none"
+    })
+    this.setData({addR: true})
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })
+

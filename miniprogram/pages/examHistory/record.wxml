@@ -1,0 +1,10 @@
+<view class="record" wx:for="{{questions}}">
+  <view class="title">{{item.question}}</view>
+  <view>
+    <view class="choice" wx:for="{{item.choices}}" wx:for-item="choice"><view class="opt">{{choice.isTrue?'✓':''}}{{choice.selected?(choice.isTrue?'★':'✗'):''}}</view><view>{{choice.answers}}</view></view>
+  </view>
+  <view class="resultView">
+    <image class="result" src="{{item.T?'/images/correct.png':'/images/error.png'}}"></image>
+  </view>
+  <view class="choice info">✓:正确的选项  ✗:选择的错误的选项  ★:选择的选项</view>
+</view>
